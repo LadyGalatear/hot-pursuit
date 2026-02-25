@@ -118,6 +118,12 @@ class Player {
                 sprite.set_x(sprite.x() - speed);
             }
             // TODO: Add logic for up and down
+            if(bn::keypad::up_held()) {
+                sprite.set_y(sprite.y() - speed);
+            }
+            if(bn::keypad::down_held()) {
+                sprite.set_y(sprite.y() + speed);
+            }
 
             bounding_box = create_bounding_box(sprite, size);
         }
@@ -152,7 +158,7 @@ int main() {
             player.sprite.set_y(22);
         }
 
-        // Update the scores and disaply them
+        // Update the scores and display them
         scoreDisplay.update();
         
         bn::core::update();
