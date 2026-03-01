@@ -208,6 +208,8 @@ int main()
     // Create a new score display
     ScoreDisplay scoreDisplay = ScoreDisplay();
 
+    //Enemy vector
+    bn::vector<bn::sprite_ptr, 2> enemy_sprites; // Sprites to display enemies
     // Create a player and initialize it
     // TODO: we will move the initialization logic to a constructor.
     Player player = Player(-19, 22, 2.0, PLAYER_SIZE);
