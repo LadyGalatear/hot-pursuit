@@ -36,7 +36,8 @@ static constexpr int HIGH_SCORE_Y = -70;
  * sprite the sprite to center the box around
  * box_size the dimensions of the bounding box
  */
-bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size) {
+bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size)
+{
     return bn::rect(sprite.x().round_integer(),
                     sprite.y().round_integer(),
                     box_size.width(),
@@ -45,121 +46,148 @@ bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size) {
 
 /**
  * Displays a score and high score.
- * 
+ *
  * Score starts a 0 and is increased each time update is called, and reset to 0 when resetScore is
  * called. High score tracks the highest score ever reached.
-*/
-class ScoreDisplay {
-    public:
-        ScoreDisplay() :
-            score(0), // Start score at 0
-            high_score(0), // Start high score at 0
-            score_sprites(bn::vector<bn::sprite_ptr, MAX_SCORE_CHARS>()), // Start with empty vector for score sprites
-            text_generator(bn::sprite_text_generator(common::fixed_8x16_sprite_font)) // Use a new text generator
-        {}
+ */
+class ScoreDisplay
+{
+public:
+    ScoreDisplay() : score(0),                                                                 // Start score at 0
+                     high_score(0),                                                            // Start high score at 0
+                     score_sprites(bn::vector<bn::sprite_ptr, MAX_SCORE_CHARS>()),             // Start with empty vector for score sprites
+                     text_generator(bn::sprite_text_generator(common::fixed_8x16_sprite_font)) // Use a new text generator
+    {
+    }
 
-        /**
-         * Increases score by 1 and updates high score if needed. Displays score and high score.
-         */
-        void update() {
-            // increase score and update high score if this is the new highest
-            score++;
-            if(score > high_score) {
-                high_score = score;
-            }
-
-            // Stop displaying previous scores
-            score_sprites.clear();
-
-            // Display new scores
-            show_number(SCORE_X, SCORE_Y, score);
-            show_number(HIGH_SCORE_X, HIGH_SCORE_Y, high_score);
-        }
-
-        /**
-         * Displays a number at the given position
-         */
-        void show_number(int x, int y, int number) {
-            // Convert number to a string and then display it
-            bn::string<MAX_SCORE_CHARS> number_string = bn::to_string<MAX_SCORE_CHARS>(number);
-            text_generator.generate(x, y, number_string, score_sprites);
-        }
-
-        /**
-         * Sets score back to 0. Does NOT reset high score.
-         */
-        void resetScore() {
-            score = 0;
-        }
-
-        int score; // current score
-        int high_score; // best core
-        bn::vector<bn::sprite_ptr, MAX_SCORE_CHARS> score_sprites; // Sprites to display scores
-        bn::sprite_text_generator text_generator; // Text generator for scores
-};
-
-class Player {
-    public:
-        Player(int starting_x, int starting_y, bn::fixed player_speed, bn::size player_size) :
-            sprite(bn::sprite_items::dot.create_sprite(starting_x, starting_y)),
-            speed(player_speed),
-            size(player_size),
-            bounding_box(create_bounding_box(sprite, size))
-        {}
-
-        /**
-         * Update the position and bounding box of the player based on d-pad movement.
-         */
-        void update() {
-            if(bn::keypad::right_held()) {
-                sprite.set_x(sprite.x() + speed);
-            }
-            if(bn::keypad::left_held()) {
-                sprite.set_x(sprite.x() - speed);
-            }
-            // TODO: Add logic for up and down
-            if(bn::keypad::up_held()) {
-                sprite.set_y(sprite.y() - speed);
-            }
-            if(bn::keypad::down_held()) {
-                sprite.set_y(sprite.y() + speed);
-            }
-
-            bounding_box = create_bounding_box(sprite, size);
-        }
-
-        // Create the sprite. This will be moved to a constructor
-        bn::sprite_ptr sprite; // Sprite pointer
-        bn::fixed speed; // The speed of the player
-        bn::size size; // The width and height of the sprite
-        bn::rect bounding_box; // The rectangle around the sprite for checking collision
-};
-
-class Enemy {
-    public:
-        Enemy(int starting_x, int starting_y, bn::size enemy_size) :
-            sprite(bn::sprite_items::square.create_sprite(starting_x, starting_y)),
-            size(enemy_size),
-            bounding_box(create_bounding_box(sprite, size))
-        {}
-        // LOGIC: Setting position for enemy. Does not currently move, yet.
-        void update()
+    /**
+     * Increases score by 1 and updates high score if needed. Displays score and high score.
+     */
+    void update()
+    {
+        // increase score and update high score if this is the new highest
+        score++;
+        if (score > high_score)
         {
-            sprite.set_x(sprite.x());
-            sprite.set_y(sprite.y());
-
-
-            bounding_box = create_bounding_box(sprite, size);
+            high_score = score;
         }
 
-        // Create the sprite. This will be moved to a constructor
-        bn::sprite_ptr sprite; // Sprite pointer
-        bn::fixed speed; // The speed of the enemy
-        bn::size size; // The width and height of the sprite
-        bn::rect bounding_box; // The rectangle around the sprite for checking collision
+        // Stop displaying previous scores
+        score_sprites.clear();
+
+        // Display new scores
+        show_number(SCORE_X, SCORE_Y, score);
+        show_number(HIGH_SCORE_X, HIGH_SCORE_Y, high_score);
+    }
+
+    /**
+     * Displays a number at the given position
+     */
+    void show_number(int x, int y, int number)
+    {
+        // Convert number to a string and then display it
+        bn::string<MAX_SCORE_CHARS> number_string = bn::to_string<MAX_SCORE_CHARS>(number);
+        text_generator.generate(x, y, number_string, score_sprites);
+    }
+
+    /**
+     * Sets score back to 0. Does NOT reset high score.
+     */
+    void resetScore()
+    {
+        score = 0;
+    }
+
+    int score;                                                 // current score
+    int high_score;                                            // best core
+    bn::vector<bn::sprite_ptr, MAX_SCORE_CHARS> score_sprites; // Sprites to display scores
+    bn::sprite_text_generator text_generator;                  // Text generator for scores
 };
 
-int main() {
+class Player
+{
+public:
+    Player(int starting_x, int starting_y, bn::fixed player_speed, bn::size player_size) : sprite(bn::sprite_items::dot.create_sprite(starting_x, starting_y)),
+                                                                                           speed(player_speed),
+                                                                                           size(player_size),
+                                                                                           bounding_box(create_bounding_box(sprite, size))
+    {
+    }
+
+    /**
+     * Update the position and bounding box of the player based on d-pad movement.
+     */
+    void update()
+    {
+        if (bn::keypad::right_held())
+        {
+            sprite.set_x(sprite.x() + speed);
+        }
+        if (bn::keypad::left_held())
+        {
+            sprite.set_x(sprite.x() - speed);
+        }
+        // TODO: Add logic for up and down
+        if (bn::keypad::up_held())
+        {
+            sprite.set_y(sprite.y() - speed);
+        }
+        if (bn::keypad::down_held())
+        {
+            sprite.set_y(sprite.y() + speed);
+        }
+
+        bounding_box = create_bounding_box(sprite, size);
+    }
+
+    // Create the sprite. This will be moved to a constructor
+    bn::sprite_ptr sprite; // Sprite pointer
+    bn::fixed speed;       // The speed of the player
+    bn::size size;         // The width and height of the sprite
+    bn::rect bounding_box; // The rectangle around the sprite for checking collision
+};
+
+class Enemy
+{
+public:
+    Enemy(int starting_x, int starting_y, bn::size enemy_size) : sprite(bn::sprite_items::square.create_sprite(starting_x, starting_y)),
+                                                                 size(enemy_size),
+                                                                 bounding_box(create_bounding_box(sprite, size))
+    {
+    }
+    // LOGIC: Setting position for enemy. Does not currently move, yet.
+    void update(Player &player)
+    {
+        // Move enemy towards player, if statements compare each x and y position.
+        if (sprite.x() < player.sprite.x())
+        {
+            sprite.set_x(sprite.x() + 1);
+        }
+        if (sprite.x() > player.sprite.x())
+        {
+            sprite.set_x(sprite.x() - 1);
+        }
+        if (sprite.y() < player.sprite.y())
+        {
+            sprite.set_y(sprite.y() + 1);
+        }
+        if (sprite.y() > player.sprite.y())
+        {
+            sprite.set_y(sprite.y() - 1);
+        }
+
+        bounding_box = create_bounding_box(sprite, size);
+    }
+
+    // Create the sprite. This will be moved to a constructor
+    bn::sprite_ptr sprite; // Sprite pointer
+    bn::fixed speed;       // The speed of the enemy
+    bn::size size;         // The width and height of the sprite
+    bn::rect bounding_box; // The rectangle around the sprite for checking collision
+};
+
+int main()
+{
     bn::core::init();
 
     // Create a new score display
@@ -168,14 +196,16 @@ int main() {
     // Create a player and initialize it
     // TODO: we will move the initialization logic to a constructor.
     Player player = Player(-19, 22, 2.0, PLAYER_SIZE);
-    Enemy enemy = Enemy(30,-12, ENEMY_SIZE); // Enemy object from Enemy class
+    Enemy enemy = Enemy(30, -12, ENEMY_SIZE); // Enemy object from Enemy class
 
-    while(true) {
+    while (true)
+    {
         player.update();
-        enemy.update();
+        enemy.update(player);
 
         // Reset the current score and player position if the player collides with enemy
-        if(enemy.bounding_box.intersects(player.bounding_box)) { // -- changed to enemy class
+        if (enemy.bounding_box.intersects(player.bounding_box))
+        { // -- refers to enemy class
             scoreDisplay.resetScore();
             player.sprite.set_x(44);
             player.sprite.set_y(22);
@@ -183,7 +213,7 @@ int main() {
 
         // Update the scores and display them
         scoreDisplay.update();
-        
+
         bn::core::update();
     }
 }
