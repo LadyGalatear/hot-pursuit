@@ -150,9 +150,10 @@ public:
 class Enemy
 {
 public:
-    Enemy(int starting_x, int starting_y, bn::size enemy_size) : sprite(bn::sprite_items::square.create_sprite(starting_x, starting_y)),
-                                                                 size(enemy_size),
-                                                                 bounding_box(create_bounding_box(sprite, size))
+    Enemy(int starting_x, int starting_y, bn::fixed enemy_speed, bn::size enemy_size) : sprite(bn::sprite_items::square.create_sprite(starting_x, starting_y)),
+                                                                                        speed(enemy_speed),
+                                                                                        size(enemy_size),
+                                                                                        bounding_box(create_bounding_box(sprite, size))
     {
     }
     // LOGIC: Setting position for enemy. Does not currently move, yet.
@@ -196,7 +197,7 @@ int main()
     // Create a player and initialize it
     // TODO: we will move the initialization logic to a constructor.
     Player player = Player(-19, 22, 2.0, PLAYER_SIZE);
-    Enemy enemy = Enemy(30, -12, ENEMY_SIZE); // Enemy object from Enemy class
+    Enemy enemy = Enemy(30, -12, 1.3, ENEMY_SIZE); // Enemy object from Enemy class
 
     while (true)
     {
