@@ -5,6 +5,7 @@
 #include <bn_size.h>
 #include <bn_string.h>
 #include <bn_sprite_ptr.h>
+#include <bn_random.h>
 #include <bn_sprite_text_generator.h>
 
 #include "common_fixed_8x16_font.h"
@@ -17,6 +18,8 @@
 static constexpr bn::size PLAYER_SIZE = {8, 8};
 static constexpr bn::size ENEMY_SIZE = {8, 8};
 
+// Enemy vector variables
+static constexpr int MAX_ENEMIES = 4; // Max number of enemies
 // Number of characters required to show two of the longest numer possible in an int (-2147483647)
 static constexpr int MAX_SCORE_CHARS = 22;
 
@@ -95,18 +98,26 @@ int main()
     // Create a new score display
     ScoreDisplay scoreDisplay = ScoreDisplay();
 
-    //Enemy vector
-    bn::vector<bn::sprite_ptr, 2> enemy_sprites; // Sprites to display enemies
+    // Enemy vector
+    bn::vector<Enemy, MAX_ENEMIES> enemies = {}; // Start with empty vector for enemies
+
+    // Initialize enemies
     // Create a player and initialize it
     // TODO: we will move the initialization logic to a constructor.
     Player player = Player(-19, 22, 2.0, PLAYER_SIZE);
-    Enemy enemy = Enemy(30, -12, 1.3, ENEMY_SIZE); // Enemy object from Enemy class
+    // Create enemies
+    enemies.push_back(Enemy(30, -12, 1.0, ENEMY_SIZE));
+    enemies.push_back(Enemy(30, 22, 1.0, ENEMY_SIZE));
+    enemies.push_back(Enemy(-19, -12, 1.0, ENEMY_SIZE));
 
     while (true)
     {
         player.update();
-        enemy.update(player);
-
+        
+        //for loop to update each enemy
+        for (Enemy& enemy : enemies)
+        {
+            enemy.update(player);
         // Reset the current score and player position if the player collides with enemy
         if (enemy.bounding_box.intersects(player.bounding_box))
         { // -- refers to enemy class
@@ -116,6 +127,7 @@ int main()
             enemy.sprite.set_x(30);
             enemy.sprite.set_y(-12);
         }
+    }
 
         // Update the scores and display them
         scoreDisplay.update();
