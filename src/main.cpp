@@ -11,17 +11,11 @@
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
 #include "Player.h"
+#include "Enemy.h"
 
 // Width and height of the the player bounding box
 static constexpr bn::size PLAYER_SIZE = {8, 8};
 static constexpr bn::size ENEMY_SIZE = {8, 8};
-
-/*
-static constexpr int MIN_Y = -bn::display::height() / 2;
-static constexpr int MAX_Y = bn::display::height() / 2;
-static constexpr int MIN_X = -bn::display::width() / 2;
-static constexpr int MAX_X = bn::display::width() / 2;
-*/
 
 // Number of characters required to show two of the longest numer possible in an int (-2147483647)
 static constexpr int MAX_SCORE_CHARS = 22;
@@ -33,19 +27,6 @@ static constexpr int SCORE_Y = -70;
 // High score location
 static constexpr int HIGH_SCORE_X = -70;
 static constexpr int HIGH_SCORE_Y = -70;
-
-/**
- * Creates a rectangle centered at a sprite's location with a given size.
- * sprite the sprite to center the box around
- * box_size the dimensions of the bounding box
- */
-bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size)
-{
-    return bn::rect(sprite.x().round_integer(),
-                    sprite.y().round_integer(),
-                    box_size.width(),
-                    box_size.height());
-}
 
 /**
  * Displays a score and high score.
@@ -105,46 +86,6 @@ public:
     int high_score;                                            // best core
     bn::vector<bn::sprite_ptr, MAX_SCORE_CHARS> score_sprites; // Sprites to display scores
     bn::sprite_text_generator text_generator;                  // Text generator for scores
-};
-
-class Enemy
-{
-public:
-    Enemy(int starting_x, int starting_y, bn::fixed enemy_speed, bn::size enemy_size) : sprite(bn::sprite_items::square.create_sprite(starting_x, starting_y)),
-                                                                                        speed(enemy_speed),
-                                                                                        size(enemy_size),
-                                                                                        bounding_box(create_bounding_box(sprite, size))
-    {
-    }
-    // LOGIC: Setting position for enemy. Does not currently move, yet.
-    void update(Player &player)
-    {
-        // Move enemy towards player, if statements compare each x and y position.
-        if (sprite.x() < player.sprite.x())
-        {
-            sprite.set_x(sprite.x() + 1);
-        }
-        if (sprite.x() > player.sprite.x())
-        {
-            sprite.set_x(sprite.x() - 1);
-        }
-        if (sprite.y() < player.sprite.y())
-        {
-            sprite.set_y(sprite.y() + 1);
-        }
-        if (sprite.y() > player.sprite.y())
-        {
-            sprite.set_y(sprite.y() - 1);
-        }
-
-        bounding_box = create_bounding_box(sprite, size);
-    }
-
-    // Create the sprite. This will be moved to a constructor
-    bn::sprite_ptr sprite; // Sprite pointer
-    bn::fixed speed;       // The speed of the enemy
-    bn::size size;         // The width and height of the sprite
-    bn::rect bounding_box; // The rectangle around the sprite for checking collision
 };
 
 int main()

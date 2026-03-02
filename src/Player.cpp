@@ -5,7 +5,7 @@
  * sprite the sprite to center the box around
  * box_size the dimensions of the bounding box
  */
-bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size)
+static bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size)
 {
     return bn::rect(sprite.x().round_integer(),
                     sprite.y().round_integer(),
