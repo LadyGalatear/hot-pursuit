@@ -23,6 +23,5 @@ Car::Car(int starting_x,int starting_y, bn::fixed car_speed, bn::size car_size) 
 void Car::update()
 {
 
-
     bounding_box = create_bounding_box(sprite, size);
 }
