@@ -1,4 +1,5 @@
 #include "Car.h"
+#include "Player.h"
 
 /**
  * Creates a rectangle centered at a sprite's location with a given size.
@@ -13,15 +14,18 @@ static bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size)
                     box_size.height());
 }
 
-Car::Car(int starting_x,int starting_y, bn::fixed car_speed, bn::size car_size) :
-        sprite(bn::sprite_items::car.create_sprite(starting_x, starting_y)),
-        speed(car_speed),
-        size(car_size),
-        bounding_box(create_bounding_box(sprite, size))
-    {
-    }
+Car::Car(int starting_x, int starting_y, bn::fixed car_speed, bn::size car_size) : sprite(bn::sprite_items::car.create_sprite(starting_x, starting_y)),
+                                                                                   speed(car_speed),
+                                                                                   size(car_size),
+                                                                                   bounding_box(create_bounding_box(sprite, size))
+{
+}
 void Car::update()
 {
-
+    // Move car up and down depending on MAX_Y and MIN_Y
+    if (sprite.y() > MAX_Y)
+    {
+        sprite.set_y(sprite.y() + speed);
+    }
     bounding_box = create_bounding_box(sprite, size);
 }
