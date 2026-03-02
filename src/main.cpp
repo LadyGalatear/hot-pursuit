@@ -20,6 +20,8 @@ static constexpr bn::size ENEMY_SIZE = {8, 8};
 
 // Enemy vector variables
 static constexpr int MAX_ENEMIES = 4; // Max number of enemies
+static bn::random rng = bn::random();
+
 // Number of characters required to show two of the longest numer possible in an int (-2147483647)
 static constexpr int MAX_SCORE_CHARS = 22;
 
@@ -107,13 +109,20 @@ int main()
     Player player = Player(-19, 22, 2.0, PLAYER_SIZE);
     // Create enemies
     enemies.push_back(Enemy(30, -12, 1.0, ENEMY_SIZE));
-    enemies.push_back(Enemy(30, 22, 1.0, ENEMY_SIZE));
-    enemies.push_back(Enemy(-19, -12, 1.0, ENEMY_SIZE));
 
+    // FRAME COUNTER
+    int current_frame = 0;
     while (true)
     {
+        current_frame++;
         player.update();
         
+        if (current_frame % 240 == 0 && enemies.size() < MAX_ENEMIES){
+            // Spawn a new enemy every 240 frames (4 seconds at 60 fps)
+            int rng_x = rng.get_int(-40, 40); // Random x position for enemy
+            int rng_y = rng.get_int(-30, 30); // Random y position for
+            enemies.push_back(Enemy(rng_x, rng_y, 1.0, ENEMY_SIZE)); // Add a new enemy with random position
+        }
         //for loop to update each enemy
         for (Enemy& enemy : enemies)
         {
