@@ -10,7 +10,7 @@
 #include "ScoreDisplay.h"
 
 // Width and height of the the player bounding box
-static constexpr bn::size PLAYER_SIZE = {8, 8};
+static constexpr bn::size PLAYER_SIZE = {16,16};
 static constexpr bn::size ENEMY_SIZE = {8, 8};
 static constexpr bn::size CAR_SIZE = {16, 8};
 
@@ -55,7 +55,7 @@ int main()
         if(current_frame % 240 == 0 && enemies.size() < MAX_ENEMIES)
         {
             current_frame = 0; // Reset frame counter after spawning an enemy
-            
+
             enemies.push_back(Enemy(rng_x, rng_y, 1.0, ENEMY_SIZE)); // Add a new enemy with random position
         }
         player.update();
