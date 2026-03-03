@@ -48,30 +48,36 @@ int main()
 
     while (true)
     {
-        int rng_x = rng.get_int(-40, 40);                        // Random x position enemy
-        int rng_y = rng.get_int(-30, 30);                        // Random y position enemy
+        int rng_x = rng.get_int(-40, 40); // Random x position enemy
+        int rng_y = rng.get_int(-30, 30); // Random y position enemy
         current_frame++;
+        // Every 4 seconds - add a new enemy with random position
+        if(current_frame % 240 == 0 && enemies.size() < MAX_ENEMIES)
+        {
+            current_frame = 0; // Reset frame counter after spawning an enemy
+            
+            enemies.push_back(Enemy(rng_x, rng_y, 1.0, ENEMY_SIZE)); // Add a new enemy with random position
+        }
         player.update();
 
         if (current_frame % 240 == 0 && enemies.size() < MAX_ENEMIES)
         {
-        current_frame = 0; // Reset frame counter after spawning an enemy
+            current_frame = 0; // Reset frame counter after spawning an enemy
             // Spawn a new enemy every 240 frames (4 seconds at 60 fps)
             enemies.push_back(Enemy(rng_x, rng_y, 1.0, ENEMY_SIZE)); // Add a new enemy with random position
-
         }
         // for loop to update each car
         for (Car &car : cars)
         {
             car.update();
-                // Reset the current score and player position if the player collides with car
+            // Reset the current score and player position if the player collides with car
             if (car.bounding_box.intersects(player.bounding_box))
             { // -- refers to car class
                 scoreDisplay.resetScore();
                 player.sprite.set_x(-19);
                 player.sprite.set_y(22); // Random x position for car
-                }
             }
+        }
         // for loop to update each enemy
         for (Enemy &enemy : enemies)
         {
