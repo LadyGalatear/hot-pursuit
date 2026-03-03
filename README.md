@@ -2,7 +2,7 @@
 A project to explore classes in C++. See instructions [here](./instructions.md)
 
 
-# Kaiju Brawl! - Description
+# Kaiju Pursuit! - Description
 Play as a very similar looking Kaiju being chased by an army of Mo-... uhm, monsters with wings!
 Avoid the cars, avoid the enemies, win big scores. Simple!
 
