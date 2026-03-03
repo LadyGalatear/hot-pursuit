@@ -1,8 +1,6 @@
 #include <bn_core.h>
 #include <bn_size.h>
-#include <bn_sprite_ptr.h>
 #include <bn_random.h>
-#include <bn_sprite_text_generator.h>
 
 #include "Player.h"
 #include "Enemy.h"
@@ -10,8 +8,8 @@
 #include "ScoreDisplay.h"
 
 // Width and height of the the player bounding box
-static constexpr bn::size PLAYER_SIZE = {16,16};
-static constexpr bn::size ENEMY_SIZE = {8, 8};
+static constexpr bn::size PLAYER_SIZE = {16, 16};
+static constexpr bn::size ENEMY_SIZE = {16, 16};
 static constexpr bn::size CAR_SIZE = {16, 8};
 
 // Car & Enemy vector variables
