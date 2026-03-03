@@ -90,6 +90,11 @@ int main()
                 player.sprite.set_y(22);
                 enemy.sprite.set_x(rng_x);
                 enemy.sprite.set_y(rng_y);
+
+                if(enemies.size() > 1)
+                {
+                    enemies.erase(enemies.begin() + 1, enemies.end());
+                }
             }
         }
 
