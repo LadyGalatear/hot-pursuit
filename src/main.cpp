@@ -39,6 +39,7 @@ int main()
 
     // Create two cars at the top and bottom of the screen, always starting at random X variables
     cars.push_back(Car(rng.get_int(-40, 40), MAX_Y, 1.0, CAR_SIZE));
+    cars.push_back(Car(rng.get_int(-40, 40), MIN_Y, 1.0, CAR_SIZE));
     // Create enemies
     enemies.push_back(Enemy(30, -12, 1.0, ENEMY_SIZE));
 
