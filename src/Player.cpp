@@ -14,7 +14,7 @@ static bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size)
 }
 
 Player::Player(int starting_x, int starting_y, bn::fixed player_speed, bn::size player_size) : 
-        sprite(bn::sprite_items::dot.create_sprite(starting_x, starting_y)),
+        sprite(bn::sprite_items::kaiju.create_sprite(starting_x, starting_y)),
         speed(player_speed),
         size(player_size),
         bounding_box(create_bounding_box(sprite, size))
@@ -26,10 +26,12 @@ void Player::update()
     if (bn::keypad::right_held())
     {
         sprite.set_x(sprite.x() + speed);
+        sprite.set_horizontal_flip(false); // changing player orientation to face proper direction
     }
     if (bn::keypad::left_held())
     {
         sprite.set_x(sprite.x() - speed);
+        sprite.set_horizontal_flip(true); // changing player orientation to face proper direction
     }
     // TODO: Add logic for up and down
     if (bn::keypad::up_held())

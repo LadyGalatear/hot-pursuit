@@ -7,7 +7,7 @@
 #include <bn_size.h>
 #include <bn_sprite_ptr.h>
 
-#include "bn_sprite_items_dot.h"
+#include "bn_sprite_items_kaiju.h"
 
 static constexpr int MIN_Y = -bn::display::height() / 2;
 static constexpr int MAX_Y = bn::display::height() / 2;
