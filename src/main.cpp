@@ -78,6 +78,9 @@ int main()
                 player.sprite.set_y(22); // Random x position for car
             }
         }
+
+        bool dead = false;
+        
         // for loop to update each enemy
         for (Enemy &enemy : enemies)
         {
@@ -85,17 +88,19 @@ int main()
             // Reset the current score and player position if the player collides with enemy
             if (enemy.bounding_box.intersects(player.bounding_box))
             { // -- refers to enemy class
+                dead = true;
                 scoreDisplay.resetScore();
                 player.sprite.set_x(-19);
                 player.sprite.set_y(22);
                 enemy.sprite.set_x(rng_x);
                 enemy.sprite.set_y(rng_y);
-
-                if(enemies.size() > 1)
-                {
-                    enemies.erase(enemies.begin() + 1, enemies.end());
-                }
+                break;
             }
+        }
+
+        if(dead && enemies.size() > 1)
+        {
+            enemies.erase(enemies.begin() + 1, enemies.end());
         }
 
         // Update the scores and display them
