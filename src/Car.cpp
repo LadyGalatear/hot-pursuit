@@ -23,9 +23,25 @@ Car::Car(int starting_x, int starting_y, bn::fixed car_speed, bn::size car_size)
 void Car::update()
 {
     // Move car up and down depending on MAX_Y and MIN_Y
-    if (sprite.y() > MAX_Y)
+    sprite.set_y(sprite.y() + speed);
+
+    // If we went past the vertical bounds, clamp and reverse direction
+    if (sprite.y() <= MIN_Y)
     {
-        sprite.set_y(sprite.y() + speed);
+        sprite.set_y(MIN_Y);
+        if (speed < 0)
+        {
+            speed = -speed;
+        }
     }
+    else if (sprite.y() >= MAX_Y)
+    {
+        sprite.set_y(MAX_Y);
+        if (speed > 0)
+        {
+            speed = -speed;
+        }
+    }
+
     bounding_box = create_bounding_box(sprite, size);
 }
