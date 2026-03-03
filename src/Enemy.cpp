@@ -14,7 +14,7 @@ static bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size)
 }
 
 Enemy::Enemy(int starting_x, int starting_y, bn::fixed enemy_speed, bn::size enemy_size) :
-        sprite(bn::sprite_items::square.create_sprite(starting_x, starting_y)),
+        sprite(bn::sprite_items::wingra.create_sprite(starting_x, starting_y)),
         speed(enemy_speed),
         size(enemy_size),
         bounding_box(create_bounding_box(sprite, size))
@@ -27,10 +27,12 @@ void Enemy::update(Player &player)
     if (sprite.x() < player.sprite.x())
     {
         sprite.set_x(sprite.x() + speed);
+        sprite.set_horizontal_flip(false);
     }
     if (sprite.x() > player.sprite.x())
     {
         sprite.set_x(sprite.x() - speed);
+        sprite.set_horizontal_flip(true);
     }
     if (sprite.y() < player.sprite.y())
     {

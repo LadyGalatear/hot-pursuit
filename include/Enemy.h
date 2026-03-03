@@ -6,7 +6,7 @@
 #include <bn_sprite_ptr.h>
 
 #include "Player.h"
-#include "bn_sprite_items_square.h"
+#include "bn_sprite_items_wingra.h"
 
 class Enemy
 {
